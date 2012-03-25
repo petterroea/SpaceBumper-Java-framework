@@ -23,17 +23,20 @@ public abstract class Client {
 			{
 				continue;
 			}
-			String[] msg = line.split(" ");
-			if(msg[0] == "BEGIN_MAP")
+			String[] msg = line.split("\\s+");
+			if(msg[0].equals("BEGIN_MAP"))
 			{
+				System.out.println("Beginning map");
 				map = new char[Integer.parseInt(msg[1])][Integer.parseInt(msg[2])];
 			}
-			else if(msg[0] == "END_MAP")
+			else if(msg[0].equals("END_MAP"))
 			{
 				end = true;
+				System.out.println("End map");
 			}
 			else
 			{
+				System.out.println(line);
 				if(map != null)
 				{
 					for(int i = 0; i < line.length(); i++)
@@ -51,6 +54,7 @@ public abstract class Client {
 	}
 	public GameState getState()
 	{
+		System.out.println("This is called");
 		try {
 			writer.println("GET_STATE");
 			writer.flush();
@@ -63,16 +67,16 @@ public abstract class Client {
 				{
 					continue;
 				}
-				String[] message = line.split(" ");
-				if(message[0] == "BEGIN_STATE") //In Java 7, you can use switch cases for Strings. I am not using it so people with Java 6 can use it.
+				String[] message = line.split("\\s+");
+				if(message[0].equals("BEGIN_STATE")) //In Java 7, you can use switch cases for Strings. I am not using it so people with Java 6 can use it.
 				{
 					state.Iteration = Integer.parseInt(message[1]);
 				}
-				else if(message[0] == "END_STATE")
+				else if(message[0].equals("END_STATE"))
 				{
 					end = true;
 				}
-				else if(message[0] == "BUMPERSHIP")
+				else if(message[0].equals("BUMPERSHIP"))
 				{
 					state.bumperships.add(new BumperShip(Float.parseFloat(message[1]),
 							Float.parseFloat(message[2]),
@@ -80,13 +84,17 @@ public abstract class Client {
 							Float.parseFloat(message[4]),
 							Float.parseFloat(message[5])));
 				}
-				else if(message[0] == "STAR")
+				else if(message[0].equals("STAR"))
 				{
 					state.stars.add(new Vector(Float.parseFloat(message[1]), Float.parseFloat(message[2])));
 				}
-				else if(message[0] == "YOU")
+				else if(message[0].equals("YOU"))
 				{
 					state.meIndex = Integer.parseInt(message[1]);
+				}
+				else
+				{
+					System.out.println("INVALID LINE: " + line);
 				}
 			}
 			return state;
