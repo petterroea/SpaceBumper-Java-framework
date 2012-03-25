@@ -3,9 +3,10 @@ package compo.spacebumper.java;
 import java.io.IOException;
 
 public class MyAI extends Client{
-	public void RunAI()
+	public void RunAi()throws IOException, InterruptedException 
 	{
 		setName("StupidAI");
+		System.out.println("Started! Woo!");
 		char[][] map = WaitForMap();
 		while(Connected())
 		{
@@ -31,10 +32,5 @@ public class MyAI extends Client{
 		{
 			
 		}
-	}
-	@Override
-	public void RunAi() throws IOException, InterruptedException {
-		// TODO Auto-generated method stub
-		
 	}
 }
